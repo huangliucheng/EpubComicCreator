@@ -1,0 +1,133 @@
+﻿<Page x:Class="EpubComicCreator.Views.Pages.SettingPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:EpubComicCreator.Views.Pages"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml" 
+      xmlns:vm="clr-namespace:EpubComicCreator.ViewModel" d:DataContext="{d:DesignInstance Type=vm:EBookSetting}"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
+      ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+      Title="SettingPage">
+
+    <Grid >
+        <Grid MaxWidth="1200">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!--第一列设置选项 下拉菜单-->
+
+            <StackPanel Grid.Column="0" Margin="20">
+                <DockPanel ToolTip="指定输出漫画图片的格式, 默认为jpg">
+                    <ui:TextBlock Style="{StaticResource OptionTextStyle}"
+                                  Text="图片格式"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"/>
+                    <ComboBox Margin="10" HorizontalAlignment="Stretch" SelectedIndex="0">
+                        <ComboBoxItem Content="PNG" IsSelected="{Binding UsePNG}"/>
+                        <ComboBoxItem Content="JPG"/>
+                    </ComboBox>
+                </DockPanel>
+
+                <DockPanel>
+                    <ui:TextBlock Style="{StaticResource OptionTextStyle}"
+                  Text="色彩模式"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center"/>
+                    <ComboBox Margin="10" HorizontalAlignment="Stretch" SelectedIndex="0">
+                        <ComboBoxItem Content="灰度图像" IsSelected="{Binding GrayMode}"/>
+                        <ComboBoxItem Content="彩色图像"/>
+                    </ComboBox>
+                </DockPanel>
+                <DockPanel>
+                    <ui:TextBlock Style="{StaticResource OptionTextStyle}"
+                                  Text="翻页模式"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"/>
+                    <ComboBox Margin="10" HorizontalAlignment="Stretch" SelectedIndex="0">
+                        <ComboBoxItem Content="普通模式"/>
+                        <ComboBoxItem Content="日漫模式" IsSelected="{Binding MangeMode}"/>
+                    </ComboBox>
+                </DockPanel>
+
+                <DockPanel>
+                    <ui:TextBlock Style="{StaticResource OptionTextStyle}"
+                                  Text="输出模式"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"/>
+                    <ComboBox Margin="10" HorizontalAlignment="Stretch" SelectedIndex="0"
+                              x:Name="OutSplitOption">
+                        <ComboBoxItem Content="整合输出" />
+                        <ComboBoxItem Content="分卷输出" IsSelected="{Binding OutSplit}"/>
+                    </ComboBox>
+                </DockPanel>
+
+                <DockPanel>
+                    <ui:TextBlock Style="{StaticResource OptionTextStyle}"
+                  Text="长页处理"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center"/>
+                    <ComboBox Margin="10" HorizontalAlignment="Stretch" SelectedIndex="0">
+                        <ComboBoxItem Content="长页旋转" IsSelected="{Binding Rotate}"/>
+                        <ComboBoxItem Content="长页分割" IsSelected="{Binding Split}"/>
+                    </ComboBox>
+                </DockPanel>
+                <DockPanel>
+                    <ui:TextBlock Style="{StaticResource OptionTextStyle}"
+                                  Text="目标设备"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"/>
+                    <ComboBox x:Name="DeviceOption"
+                              ItemsSource="{Binding DevicesList}"
+                              SelectedIndex="{Binding DeviceSelectedIndex}"
+                              Margin="10" HorizontalAlignment="Stretch"
+                              SelectionChanged="DeviceOption_SelectionChanged">
+                    </ComboBox>
+                </DockPanel>
+
+
+                <DockPanel>
+                    <CheckBox Content="边缘处理" HorizontalAlignment="Center"
+                              VerticalAlignment="Center" Margin="10" ToolTip="切除漫画图片中的白边"
+                              ToolTipService.InitialShowDelay="0"
+                              IsChecked="{Binding MarginCrop}"
+                              />
+                    <CheckBox Content="不处理图片" HorizontalAlignment="Center"
+                              VerticalAlignment="Center" Margin="10" ToolTip="无视目标设备配置, 保持图片原样"
+                               ToolTipService.InitialShowDelay="0"
+                              IsChecked="{Binding DisProcess}"
+                              />
+                </DockPanel>
+                
+            </StackPanel>
+
+            <!--第二列设置选项 复选框菜单-->
+            <StackPanel Grid.Column="1" Margin="25">
+                <StackPanel x:Name="CustomProfile" Visibility="Collapsed">
+                    <DockPanel  Margin="10">
+                        <ui:TextBlock Style="{StaticResource OptionTextStyle}"
+                                      Text="自定义宽度" Margin="10"/>
+                        <ui:NumberBox Value="{Binding TargetWidth}"  MaxWidth="500" Minimum="600"
+                                      KeyDown="TextBox_KeyDown"
+                                      LostFocus="NumberBox_LostFocus"
+                                      ClearButtonEnabled="False"/>
+                    </DockPanel>
+
+                    <DockPanel Margin="10">
+                        <ui:TextBlock Style="{StaticResource OptionTextStyle}"
+                                      Text="自定义高度" Margin="10"/>
+                        <ui:NumberBox Value="{Binding TargetHeight}" MaxWidth="500" Minimum="800" 
+                                      KeyDown="TextBox_KeyDown"
+                                      LostFocus="NumberBox_LostFocus"
+                                      ClearButtonEnabled="False"/>
+                    </DockPanel>
+                </StackPanel>
+            </StackPanel>
+            
+        </Grid>
+    </Grid>
+</Page>

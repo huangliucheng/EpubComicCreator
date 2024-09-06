@@ -1,0 +1,59 @@
+﻿<ui:FluentWindow x:Class="EpubComicCreator.Views.Windows.ComicBook"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EpubComicCreator.Views.Windows"
+        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+        xmlns:tray="http://schemas.lepo.co/wpfui/2022/xaml/tray"
+        xmlns:pages="clr-namespace:EpubComicCreator.Views.Pages"
+        mc:Ignorable="d"
+        Title="ComicBook" Height="700" Width="1000"
+        MinHeight="700"
+        MinWidth="1000"
+        ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
+        ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+        Foreground="{DynamicResource TextFillColorPrimaryBrush}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--标题栏-->
+        <ui:TitleBar Title="Comic Creater" Grid.Row="0" 
+             Icon="pack://application:,,,/Assets/Book.png"/>
+
+        <!--导航栏-->
+        <ui:NavigationView x:Name="RootNavigation" Grid.Row="1" PaneDisplayMode="LeftFluent">
+
+            <ui:NavigationView.MenuItems>
+                <!--主页按钮-->
+                <ui:NavigationViewItem
+            Content="主页"
+            Icon="{ui:SymbolIcon Home24}"
+            NavigationCacheMode="Enabled"
+            TargetPageType="{x:Type pages:HomePage}"
+            >
+
+                </ui:NavigationViewItem>
+                <!--设置按钮-->
+                <ui:NavigationViewItem
+            Content="设置"
+            Icon="{ui:SymbolIcon Settings24}"
+            NavigationCacheMode="Enabled"
+            TargetPageType="{x:Type pages:SettingPage}">
+
+                </ui:NavigationViewItem>
+            </ui:NavigationView.MenuItems>
+
+            <ui:NavigationView.FooterMenuItems>
+                <ui:NavigationViewItem Content="详情"
+                               Icon="{ui:SymbolIcon Info24}"
+                               />
+
+            </ui:NavigationView.FooterMenuItems>
+        </ui:NavigationView>
+
+    </Grid>
+</ui:FluentWindow>
