@@ -31,17 +31,20 @@ namespace EpubComicCreator.Models
                 }
                 else if (Setting.Split)
                 {
-                    ImageTools.PageSplit(Image);
                     Image.HasChildImage = true;
+                    ImageTools.PageSplit(Image);
                     // 是否是日漫格式
                     if (Setting.MangeMode)
                     {
                         // 日漫格式下，左右图片的顺序是相反的
                         Image.ChildImage.Reverse();
                     }
+                    Image.ChildImage[0].ImageTitle = Image.ChildImageTitle[0];
+                    Image.ChildImage[1].ImageTitle = Image.ChildImageTitle[1];
+
                     string parentDirectory = Path.GetDirectoryName(Image.ImageRelativePath);
-                    Image.ChildImage[0].ImageRelativePath = parentDirectory + Image.ChildImageTitle[0];
-                    Image.ChildImage[1].ImageRelativePath = parentDirectory + Image.ChildImageTitle[1];
+                    Image.ChildImage[0].ImageRelativePath = parentDirectory + "/" + Image.ChildImageTitle[0];
+                    Image.ChildImage[1].ImageRelativePath = parentDirectory + "/" + Image.ChildImageTitle[1];
                 }
             }
 

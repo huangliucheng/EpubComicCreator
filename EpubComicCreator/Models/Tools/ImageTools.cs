@@ -25,13 +25,14 @@ namespace EpubComicCreator.Models.Tools
             MagickImage leftImage = (MagickImage)image.Image.Clone();
             MagickImage rightImage = (MagickImage)image.Image.Clone();
 
-            leftImage.Crop(halfWidth, image.Image.Height, Gravity.West);
-            rightImage.Crop(halfWidth, image.Image.Height, Gravity.East);
+            leftImage.Crop(new MagickGeometry(0, 0, halfWidth, image.Image.Height));
+            leftImage.RePage();
+            rightImage.Crop(new MagickGeometry(halfWidth, 0, halfWidth, image.Image.Height));
+            rightImage.RePage();
 
             ComicImage LeftImage = new()
             {
                 Image = leftImage,
-                ImageTitle = image.ImageTitle,
                 TargetWxH = image.TargetWxH,
                 HasChildImage = false,
                 GetTopMargin = image.GetTopMargin,
@@ -41,7 +42,6 @@ namespace EpubComicCreator.Models.Tools
             ComicImage RightImage = new()
             {
                 Image = rightImage,
-                ImageTitle = image.ImageTitle,
                 TargetWxH = image.TargetWxH,
                 HasChildImage = false,
                 GetTopMargin = image.GetTopMargin,
@@ -84,6 +84,8 @@ namespace EpubComicCreator.Models.Tools
             using MagickImage tmpImage = (MagickImage)image.Image.Clone();
             tmpImage.ColorSpace = ColorSpace.Gray;
             tmpImage.AutoThreshold(AutoThresholdMethod.OTSU);
+
+            if (tmpImage.BoundingBox == null) return;
             IMagickGeometry boundingBox = tmpImage.BoundingBox;
 
             // 如果boundingBox的面积小于图像面积的一半，则不进行边缘裁剪

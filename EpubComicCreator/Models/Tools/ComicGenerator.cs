@@ -77,7 +77,7 @@ namespace EpubComicCreator.Models.Tools
                 ComicImage Image = new()
                 {
                     Image = new(imagePathList[i]),
-                    ImageTitle = Path.GetFileNameWithoutExtension(imagePathList[i]),
+                    ImageTitle = Path.GetFileNameWithoutExtension(savePathList[i]),
                     ImageRelativePath = savePathList[i],
                     ImageExt = setting.UsePNG ? "png" : "jpg",
                     TargetWxH = setting.TargetWxH
@@ -94,8 +94,9 @@ namespace EpubComicCreator.Models.Tools
                     {
                         var cover = archive.CreateEntry("OEBPS/Images/cover." + Image.ImageExt, CompressionLevel.Optimal);
                         using var coverStream = cover.Open();
-                        var childImage = firstChildImage;
-                        childImage.Image.Write(coverStream);
+                        {
+                            firstChildImage.Image.Write(coverStream);
+                        }
                     }
                     ImageXhtml(archive, firstChildImage);
                     ImageXhtml(archive, secondChildImage);
