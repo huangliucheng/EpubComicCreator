@@ -94,6 +94,7 @@ namespace EpubComicCreator.Models.Tools
                         var cover = archive.CreateEntry("OEBPS/Images/cover." + Image.ImageExt, CompressionLevel.Optimal);
                         using var coverStream = cover.Open();
                         {
+                            firstChildImage.Image.Density = new ImageMagick.Density(300, 300);
                             firstChildImage.Image.Write(coverStream);
                         }
                     }
@@ -110,14 +111,14 @@ namespace EpubComicCreator.Models.Tools
                     var firstEntry = archive.CreateEntry("OEBPS/Images/" + firstChildImage.ImageRelativePath + "." + Image.ImageExt);
                     using (var entryStream = firstEntry.Open())
                     {
-                        firstChildImage.Image.Density = new ImageMagick.Density(300);
+                        firstChildImage.Image.Density = new ImageMagick.Density(300, 300);
                         firstChildImage.Image.Write(entryStream);
                     }
 
                     var secondEntry = archive.CreateEntry("OEBPS/Images/" + secondChildImage.ImageRelativePath + "." + Image.ImageExt);
                     using (var entryStream = secondEntry.Open())
                     {
-                        secondChildImage.Image.Density = new ImageMagick.Density(300);
+                        secondChildImage.Image.Density = new ImageMagick.Density(300, 300);
                         secondChildImage.Image.Write(entryStream);
                     }
 
@@ -160,7 +161,7 @@ namespace EpubComicCreator.Models.Tools
                     var entry = archive.CreateEntry("OEBPS/Images/" + Image.ImageRelativePath + "." + Image.ImageExt);
                     using (var entryStream = entry.Open())
                     {
-                        Image.Image.Density = new ImageMagick.Density(300);
+                        Image.Image.Density = new ImageMagick.Density(300, 300);
                         Image.Image.Write(entryStream);
                     }
 
