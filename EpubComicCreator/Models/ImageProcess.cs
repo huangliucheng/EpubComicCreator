@@ -64,8 +64,6 @@ namespace EpubComicCreator.Models
                 }
             }
 
-
-
             // 调整图片大小并获得图像在目标设备的垂直百分比
             if (Image.HasChildImage)
             {

@@ -114,13 +114,22 @@ namespace EpubComicCreator.ViewModel
                     _inputPath = value;
                     _lastInputPath = _inputPath;
                     OnPropertyChanged(nameof(InputPath));
-                    _savePath = Path.GetDirectoryName(_inputPath);
+                    BookList(_inputPath);
+
+                    if (!string.IsNullOrEmpty(Path.GetDirectoryName(_inputPath)))
+                    {
+                        SavePath = Path.GetDirectoryName(_inputPath);
+                    }
+                    else
+                    {
+                        SavePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                    }
+
                     OnPropertyChanged(nameof(SavePath));
-                    _comicTitle = Path.GetFileName(_inputPath);
+                    ComicTitle = Path.GetFileName(_inputPath);
                     OnPropertyChanged(nameof(ComicTitle));
 
                     ComicFileStructure = FileTools.BuildTree(_inputPath);
-                    BookList(_inputPath); 
                 }
             }
         }
@@ -225,10 +234,7 @@ namespace EpubComicCreator.ViewModel
                     SplitTreeNode(_booksBasicProperties, ComicFileStructure);
                     _currentTask = Task.Run(() => BookProgram.Start(_booksBasicProperties, setting, bookStatus, token), token);
                     await _currentTask;
-                    if (_cancellationTokenSource == null)
-                    {
-                        WeakReferenceMessenger.Default.Send("任务已完成!", MessageToken.ProgramMessage);
-                    }
+                    WeakReferenceMessenger.Default.Send("任务已完成!", MessageToken.ProgramMessage);
                 }
                 catch
                 {
@@ -325,12 +331,14 @@ namespace EpubComicCreator.ViewModel
                     {
                         bookStatus.Add(new BookStatus { Name = comicTitle + $"_{(i+1):D2}", Status = "" });
                         _booksBasicProperties.Add(new BookBasicProperties(bookStatus[i].Name));
+                        _booksBasicProperties[^1].SavePath = SavePath;
                     }
                 }
                 else
                 {
                     bookStatus.Add(new BookStatus { Name = comicTitle + $"_{1:D2}", Status = "" });
                     _booksBasicProperties.Add(new BookBasicProperties(bookStatus[0].Name));
+                    _booksBasicProperties[0].SavePath = SavePath;
                 }
                 OnPropertyChanged(nameof(bookStatus));
             }

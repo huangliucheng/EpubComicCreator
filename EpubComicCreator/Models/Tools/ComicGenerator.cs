@@ -64,9 +64,8 @@ namespace EpubComicCreator.Models.Tools
         // 创建OEBPS文件夹的子文件
         private static void SubFileGenerator(ZipArchive archive, List<string> imagePathList, List<string> savePathList, EBookSetting setting)
         {
-
-
             StyleCSS(archive);
+
             string chapterName = string.Empty;
             for (int i = 0; i < imagePathList.Count; i++)
             {
@@ -111,12 +110,14 @@ namespace EpubComicCreator.Models.Tools
                     var firstEntry = archive.CreateEntry("OEBPS/Images/" + firstChildImage.ImageRelativePath + "." + Image.ImageExt);
                     using (var entryStream = firstEntry.Open())
                     {
+                        firstChildImage.Image.Density = new ImageMagick.Density(300);
                         firstChildImage.Image.Write(entryStream);
                     }
 
                     var secondEntry = archive.CreateEntry("OEBPS/Images/" + secondChildImage.ImageRelativePath + "." + Image.ImageExt);
                     using (var entryStream = secondEntry.Open())
                     {
+                        secondChildImage.Image.Density = new ImageMagick.Density(300);
                         secondChildImage.Image.Write(entryStream);
                     }
 
@@ -159,6 +160,7 @@ namespace EpubComicCreator.Models.Tools
                     var entry = archive.CreateEntry("OEBPS/Images/" + Image.ImageRelativePath + "." + Image.ImageExt);
                     using (var entryStream = entry.Open())
                     {
+                        Image.Image.Density = new ImageMagick.Density(300);
                         Image.Image.Write(entryStream);
                     }
 
