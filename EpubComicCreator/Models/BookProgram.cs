@@ -33,7 +33,7 @@ namespace EpubComicCreator.Models
 
                 var book = properties[i];
                 bookStatus[i].Status = "正在处理";
-                WeakReferenceMessenger.Default.Send(new BookProgressBarValue((i + 1) / 2.0, properties.Count));
+                WeakReferenceMessenger.Default.Send(new BookProgressBarValue(i + 0.5, properties.Count));
                 WeakReferenceMessenger.Default.Send($"正在制作第{i + 1}本漫画书!", MessageToken.ProgramMessage);
 
                 using (FileStream zipFileStream = new((Path.Combine(book.SavePath, book.Title + ".tmpepub")), FileMode.Create))
