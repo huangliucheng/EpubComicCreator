@@ -265,16 +265,16 @@ namespace EpubComicCreator.Models.Tools
             meta.SetAttribute("charset", "UTF-8");
             head.AppendChild(meta);
 
-            XmlElement link = xhtml.CreateElement("link");
-            link.SetAttribute("href", "style.css");
-            link.SetAttribute("type", "text/css");
-            link.SetAttribute("rel", "stylesheet");
-            head.AppendChild(link);
-
             XmlElement body = xhtml.CreateElement("body");
             html.AppendChild(body);
 
             XmlElement nav_toc = xhtml.CreateElement("nav");
+            string epubns = "http://www.idpf.org/2007/ops";
+
+            XmlAttribute typeAttribute = xhtml.CreateAttribute("epub", "type", epubns);
+            typeAttribute.Value = "toc";
+            nav_toc.SetAttribute("xmlns:epub", epubns);
+            nav_toc.Attributes.Append(typeAttribute);
             nav_toc.SetAttribute("epub:type", "toc");
             nav_toc.SetAttribute("id", "toc");
             body.AppendChild(nav_toc);
@@ -363,10 +363,8 @@ namespace EpubComicCreator.Models.Tools
         {
             var entry = archive.CreateEntry("OEBPS/Text/style.css", CompressionLevel.Optimal);
             string content = "@page {\r\nmargin: 0;\r\n}\r\nbody {\r\ndisplay: block;\r\nmargin: 0;\r\npadding: 0;\r\n}";
-            using (StreamWriter writer = new(entry.Open(), new UTF8Encoding(false)))
-            {
-                writer.Write(content);
-            }
+            using StreamWriter writer = new(entry.Open(), new UTF8Encoding(false));
+            writer.Write(content);
         }
 
         private static void ImageXhtml(ZipArchive archive, ComicImage comicImage)
